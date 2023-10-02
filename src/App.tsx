@@ -7,7 +7,6 @@ import kick_n_hat from "./assets/Kick_n_Hat.mp3";
 import kick_1 from "./assets/RP4_KICK_1.mp3";
 import Cev_H2 from "./assets/Cev_H2.mp3";
 import Disc from "./assets/Dsc_Oh.mp3";
-
 import "./App.css";
 import Pad from "./components/Pad";
 import { useState } from "react";
@@ -63,20 +62,38 @@ const pads = [
 function App() {
 	const [display, setDisplay] = useState("");
 	const [isOn, setIsOn] = useState(false);
+	const [volume, setVolume] = useState(0.5);
+
 	function changeDisplay(toDisplay: string) {
 		setDisplay(toDisplay);
 	}
 	return (
-		<div id="drum-machine">
-			<div className="pad-bank">
-				{pads.map((pad) => (
-					<Pad changeDisplay={changeDisplay} key={pad.keyButton} {...pad} />
-				))}
-			</div>
-			<div className="controls-container">
-				<div id="display">{display}</div>
-				<div className="control" onClick={() => setIsOn(!isOn)}>
-					<div className="switch" style={isOn ? { right: 0 } : { right: "70%" }}></div>
+		<div id="container">
+			<div id="drum-machine">
+				<div className="pad-bank">
+					{pads.map((pad) => (
+						<Pad
+							volume={volume}
+							isOn={isOn}
+							changeDisplay={changeDisplay}
+							key={pad.keyButton}
+							{...pad}
+						/>
+					))}
+				</div>
+				<div className="controls-container">
+					<div id="display">{display}</div>
+					<div>
+						<input
+							type="range"
+							min={0}
+							max={100}
+							onChange={(e) => setVolume(parseFloat(e.target.value) / 100)}
+						/>
+					</div>
+					<div className={`control ${isOn ? "on" : "off"}`} onClick={() => setIsOn(!isOn)}>
+						<div className="switch" style={isOn ? { right: 0 } : { right: "70%" }}></div>
+					</div>
 				</div>
 			</div>
 		</div>

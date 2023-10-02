@@ -1,31 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface prop {
 	keyButton: string;
 	id: string;
 	audioUrl: string;
 	changeDisplay(audioName: string): void;
+	isOn: boolean;
+	volume: number;
 }
 
-export default function Pad({ keyButton, audioUrl, id, changeDisplay }: prop) {
+export default function Pad({ keyButton, audioUrl, id, changeDisplay, isOn, volume }: prop) {
+	const [isPlaying, setIsPlaying] = useState(false);
 	function playAudio() {
-		const audioTag = document.getElementById(keyButton) as HTMLAudioElement;
-		console.log(audioTag);
-		changeDisplay(id);
-		audioTag.currentTime = 0;
-		audioTag.play();
+		if (isOn) {
+			const audioTag = document.getElementById(keyButton) as HTMLAudioElement;
+			changeDisplay(id);
+			audioTag.currentTime = 0;
+			audioTag.volume = volume;
+			audioTag.play();
+			setIsPlaying(true);
+
+			setTimeout(() => {
+				setIsPlaying(false);
+			}, 150);
+		}
 	}
 	function handleKeydown(event: globalThis.KeyboardEvent) {
-		event.key === keyButton.toLowerCase() && playAudio();
+		event.key.toLowerCase() === keyButton.toLowerCase() && playAudio();
 	}
 
 	useEffect(() => {
-		document.getElementById(id).addEventListener("keydown", handleKeydown);
-		return () => document.getElementById(id).removeEventListener("keydown", handleKeydown);
+		document.addEventListener("keypress", handleKeydown);
+		return () => document.removeEventListener("keypress", handleKeydown);
 	});
 
 	return (
-		<button className="drum-pad" id={id} onClick={() => playAudio()}>
+		<button
+			className={`drum-pad ${isPlaying ? "playing" : ""}`}
+			id={id}
+			onClick={() => playAudio()}
+		>
 			{keyButton}
 			<audio preload="none" className="clip" id={keyButton} src={audioUrl}></audio>
 		</button>

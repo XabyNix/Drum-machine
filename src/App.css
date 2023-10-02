@@ -1,4 +1,12 @@
+#container {
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	place-content: center;
+}
+
 .pad-bank {
+	background-color: transparent;
 	width: 300px;
 	height: 300px;
 	display: grid;
@@ -13,18 +21,27 @@
 }
 
 #drum-machine {
-	background-color: rgb(46, 46, 46);
+	background: rgb(64, 64, 64);
+	background: linear-gradient(
+		to bottom,
+		rgba(64, 64, 64, 0.5200280795912116) 0%,
+		rgba(37, 37, 37, 0.979411833092612) 100%
+	);
 	display: flex;
 	width: fit-content;
 }
 .drum-pad {
+	font-size: 2rem;
 	border: 1px solid black;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
-.drum-pad:active {
-	box-shadow: inset 0px 0px 15px 9px rgba(0, 0, 0, 0.46);
+.drum-pad.playing {
+	background-color: rgb(255, 255, 119);
+	border: 2px solid cyan;
 }
 .controls-container {
-	background-color: gray;
+	background-color: transparent;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -32,6 +49,10 @@
 	margin: 3rem;
 }
 #display {
+	outline: 3px solid red;
+	border-radius: 5px;
+	text-align: center;
+	min-width: 120px;
 	padding: 1rem;
 	background-color: white;
 }
@@ -40,6 +61,12 @@
 	height: 30px;
 	position: relative;
 	background-color: white;
+}
+.control.on {
+	background-color: green;
+}
+.control.off {
+	background-color: red;
 }
 .switch {
 	width: 20px;
